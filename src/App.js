@@ -1,25 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Routes, Route} from "react-router-dom";
+import {Toaster} from 'react-hot-toast';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import Main from "./Home";
+import Login from "./Login"
 
-export default App;
+export default function app() {
+    return (
+      <div className="home">
+        <Toaster
+     position="top-right"
+     toastOptions={{
+       style: {
+         fontSize: '1.8rem',
+       },
+     }}
+    />
+        <Routes>
+          <Route path="/" element={<Login/>}/>
+          <Route path="/home" element={<Main />} />
+        </Routes>
+      </div>
+    );
+  }
