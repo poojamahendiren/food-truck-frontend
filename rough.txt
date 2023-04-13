@@ -1,0 +1,7 @@
+// "browser" : {
+  //   "crypto":false,
+  //   "stream":false
+  // }
+
+  "crypto" : "npm:crypto-browserify",
+    "stream" :"npm:stream-browserify"

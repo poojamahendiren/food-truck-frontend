@@ -3,7 +3,7 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import "../main.css";
 import data from "./menuItems";
 import axios from 'axios';
-//import jwt from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 
 function Menu({ actionProvider, orderedItems, setState }) {
   const [index, setIndex] = useState(0);
@@ -78,124 +78,104 @@ function Menu({ actionProvider, orderedItems, setState }) {
   // }
 
 
-  const handleSubmit=async(e)=>{
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    setSubmit(!submit);
-    setState((state) => ({
-      ...state,
-      orderedItems : [...items],
+  
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/items/details`,
+        { title: items },
+        {
+          headers: {
+            accesstoken: localStorage.getItem("token"),
+          },
+        }
+      );
+      console.log(response.data);
+      setState((state) => ({
+        ...state,
+        orderedItems: [...items],
+      }));
+      setSubmit(true);
+      actionProvider.handleToppings();
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
+  
     
-    
-
-  //   try{
-  //     const res =await axios.post(`${process.env.REACT_APP_BASE_URL}/items/details`,[...items]),
-  //     console.log(res);
-      
-  // },
-  //   catch(error){
-  //     console.log('Error:',error)
+    return (
+      <main>
+        <div className="card-deck">
+          <div className="card-wrapper">
+            <div className="card-main" key={id}>
+              <img className="card-img-top" src={img} alt="food" />
   
-  //   },
-  //const decodedToken = jwt.decode(localStorage.getItem("token"));
+              <div className="card-block">
+                <h4 className="card-title">{text}</h4>
+                <p>{desc}</p>
+              </div>
+              <div>
+                {menu[index].added === false && (
+                  <div>
+                    <div class="counter-deck">
+                    <button className="counter" onClick={decrease}>
+                      -
+                    </button>
+                    <p className="counter">{count}</p>
+                    <button className="counter" onClick={increase}>
+                      +
+                    </button>
+                    <p>PRICE: ${price * count}</p>
+                    </div>
+                  </div>
+                )}
+                {menu[index].added === true && (
+                  <p>
+                    {menu[index].qty} {text} added
+                  </p>
+                )}
+              </div>
+            </div>
   
-              //const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/users/me` ,
-            //   const  data  = await axios.post(`${process.env.REACT_APP_BASE_URL}/items/details`, 
-            //   { 
-            //     title: newItems,
-            //    },            
-            //     {headers : {
-            //         accesstoken : localStorage.getItem("token"),
-
-            // }
-            // }),
-            //toast.success('New task added'),
-              
-
-              // console.log(response.data);
-              
-            // setIsAddingNew(false);
-            // setNewTask('');
-            // setTaskList([{ ...data }, ...taskList]);
-
-    
-      
-      
-    }));
-
+            <div className="card-footer">
+              {menu[index].added === false && (
+                <button onClick={addNewItem} id={id} value={text}>
+                  Add +
+                </button>
+              )}
+              {menu[index].added === true && (
+                <button disabled={true}>Added ✓</button>
+              )}
+            </div>
+  
+            <button className="prev-btn" onClick={() => prevItem()}>
+              <FaChevronLeft />
+            </button>
+            <button className="next-btn" onClick={() => nextItem()}>
+              <FaChevronRight />
+            </button>
+          </div>
+          {!submit && (
+            <button disabled={!enable} onClick={handleSubmit}>
+              Order Now
+            </button>
+          )}
+          {submit && <button disabled={true}>✓ Added to Cart</button>}
+        </div>
+      </main>
+    );
   
   
 
 
 
-  
-    actionProvider.handleToppings();
-    
+
   }
+
+  export default Menu;
   //console.log(items);
 
   
 
-  return (
-    <main>
-      <div className="card-deck">
-        <div className="card-wrapper">
-          <div className="card-main" key={id}>
-            <img className="card-img-top" src={img} alt="food" />
-
-            <div className="card-block">
-              <h4 className="card-title">{text}</h4>
-              <p>{desc}</p>
-            </div>
-            <div>
-              {menu[index].added === false && (
-                <div>
-                  <div class="counter-deck">
-                  <button className="counter" onClick={decrease}>
-                    -
-                  </button>
-                  <p className="counter">{count}</p>
-                  <button className="counter" onClick={increase}>
-                    +
-                  </button>
-                  <p>PRICE: ${price * count}</p>
-                  </div>
-                </div>
-              )}
-              {menu[index].added === true && (
-                <p>
-                  {menu[index].qty} {text} added
-                </p>
-              )}
-            </div>
-          </div>
-
-          <div className="card-footer">
-            {menu[index].added === false && (
-              <button onClick={addNewItem} id={id} value={text}>
-                Add +
-              </button>
-            )}
-            {menu[index].added === true && (
-              <button disabled={true}>Added ✓</button>
-            )}
-          </div>
-
-          <button className="prev-btn" onClick={() => prevItem()}>
-            <FaChevronLeft />
-          </button>
-          <button className="next-btn" onClick={() => nextItem()}>
-            <FaChevronRight />
-          </button>
-        </div>
-        {!submit && (
-          <button disabled={!enable} onClick={handleSubmit}>
-            Order Now
-          </button>
-        )}
-        {submit && <button disabled={true}>✓ Added to Cart</button>}
-      </div>
-    </main>
-  );
-}
-export default Menu;
+  
