@@ -3,7 +3,7 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import "../main.css";
 import data from "./menuItems";
 import axios from 'axios';
-import jwt from 'jsonwebtoken';
+//import jwt from 'jsonwebtoken';
 
 function Menu({ actionProvider, orderedItems, setState }) {
   const [index, setIndex] = useState(0);
@@ -27,7 +27,7 @@ function Menu({ actionProvider, orderedItems, setState }) {
 
 
       const newItem = {
-        id: e.target.id,
+        //id: e.target.id,
         itemName: e.target.value,
         quantity: count,
         price:count*price
@@ -68,40 +68,41 @@ function Menu({ actionProvider, orderedItems, setState }) {
     checkBoundary(newIndex);
   }
 
-  // const handleSubmit=()=>{
-  //   setSubmit(!submit);
-  //   setState((state) => ({
-  //     ...state,
-  //     orderedItems: [...items]
-  //   }));
-  //   actionProvider.handleToppings();
-  // }
+  const handleSubmit=()=>{
+    setSubmit(!submit);
+    setState((state) => ({
+      ...state,
+      orderedItems: [...items]
+    }));
+    actionProvider.handleToppings();
+  }
 
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-  
-    try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/items/details`,
-        { title: items },
-        {
-          headers: {
-            accesstoken: localStorage.getItem("token"),
-          },
-        }
-      );
-      console.log(response.data);
-      setState((state) => ({
-        ...state,
-        orderedItems: [...items],
-      }));
-      setSubmit(true);
-      actionProvider.handleToppings();
-    } catch (error) {
-      console.log("Error:", error);
-    }
-  };
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  // console.log(items);
+  // //console.log(newItems);
+  //   try {
+  //     const response = await axios.post(
+  //       `${process.env.REACT_APP_BASE_URL}/items/details`,
+  //       { title : items },
+  //       {
+  //         headers: {
+  //           accesstoken: localStorage.getItem("token"),
+  //         },
+  //       }
+  //     );
+  //     console.log(response.data);
+  //     setState((state) => ({
+  //       ...state,
+  //       orderedItems: [...items],
+  //     }));
+  //     setSubmit(true);
+  //     actionProvider.handleToppings();
+  //   } catch (error) {
+  //     console.log("Error:", error);
+  //   }
+  // };
   
     
     return (

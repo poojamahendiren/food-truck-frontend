@@ -15,6 +15,7 @@ const [formData, setFormData] = useState({
 });
 const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
     const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/register/signin`,{...formData});  
     console.log(response);
     toast.success('SignedIn successfully');
@@ -23,6 +24,11 @@ const handleSubmit = async (e) => {
         navigate("/home");
         //toast.success('SignedIn successfully');
     }
+  }
+  catch (err) {
+    console.log(err);
+    toast.error('Please provide a valid email address and password.');
+  }
   };
 
   const [user,setUser] = useState( {

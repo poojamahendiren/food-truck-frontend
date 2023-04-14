@@ -69,10 +69,13 @@ function ViewOrder({
           <b>Spice Level:</b>
           &nbsp;{preferredSpiceLevel}
         </div>
+        console.log(order);
       </div>
       {!submit && <button onClick={handleSubmit}>Confirm</button>}
       {submit && <button disabled={true}>Confirm</button>}
+      
     </main>
+    
   );
 }
 export default ViewOrder;
